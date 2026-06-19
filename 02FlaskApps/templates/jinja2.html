@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {# if, for문과 같은 제어문은 아래와 같이 %로 감싸서 표현한다. 
+  파이썬에서는 문자열 변수에 내용이 있다면 그 자체로 True조건이 되므로 
+  아래와 같은 if문을 사용한다. #}
+  {% if title %}
+  <title>{{ title }}</title>
+  {% endif %}
+</head>
+<body>
+  {# 변수 출력시에는 중괄호 2개를 겹쳐서 사용한다. #}
+  <h1>바인딩 문자열 : {{ home_str }}</h1>
+  {# 리스트에서 인덱스 2~3까지 슬라이싱해서 출력한다. #}
+  <p>바인딩 이스트[2:4] : {{ home_list[2:4] }}</p>
+  <ul>
+    {# for문을 사용하면 HTML태그를 물리적으로 반복해서 출력할 수 있다. #}
+    {% for idx in home_list %}
+    <li>{{ idx }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
