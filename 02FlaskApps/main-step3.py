@@ -2,15 +2,11 @@
 from collections import UserDict
 import email
 import html
-from os import error, name
+from os import name
 from pickle import GET
 from unittest.result import failfast
 
 from flask import Flask, render_template, request
-# 폼값 처리를 위한 모듈 임포트
-from flask import redirect, session, url_for
-# 페이지 이동
-from markupsafe import escape
 # 플라스크 앱 초기화 및 객체생성
 app = Flask(__name__)
 
@@ -92,86 +88,6 @@ def method():
       email=email,
       fail=fail
     ) 
-    
-# URL 패스 Variable 1
-'''
-경로변수는 쿼리스트링 형식이 아닌 경로 자체를 사용해서 파라미터를
-전달할 수 있다.
-'''
-# URL Path Variable : 타입을 생략하면 String 형식으로 전달
-@app.route('/hello/<name>')
-def hello(name):
-  return "내 이름은 {}".format(name)
-
-# URL 패스 Variable 2 : 정수형으로 지정
-@app.route('/input/<int:num>')
-def input(num):
-  name = ''
-  if num == 1:
-    name = '홍길동'
-  elif num == 2:
-    name = '전우치'
-  elif num == 3:
-    name = '손오공'
-  return "내 선택은 {}".format(name)   
-
-# session 사용시 필수사항인 시크릿키 생성(랜덤한 문자열로 구성)
-app.secret_key = 'ADeff/45dsfDFgdadasd/FA?sda'
-
-# 예시 사용자를 딕셔너리로 정의 (실제 DB 연결 대신 하드코딩)
-users = {
-  'admin': '1234',
-  'user': '9876'
-} 
-
-# 세션을 획득해야 진입할 수 있는 마이페이지
-@app.route('/mypage')
-def mypage():
-  # 페이지로 진입하면 세션정보가 있는지 확인(로그인 되었는지 확인)
-  if 'username' in session:
-    # 로그인 된 상태라면 welcome 페이지를 렌더링
-    # 템플릿으로 회원의 아이디를 전달한다.
-    return render_template('welcome.html',
-                           username=escape(session['username']))
-    # 로그인이 안된 상태라면 login 페이지로 이동시킨다.
-    # url_for() 함수의 인수는 라우팅 처리된 '함수명'을 지정한다.
-  return redirect(url_for('login'))
-
-# 로그인 페이지 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-  # 로그인 페이지는 GET방식이 아닌 POST방식으로 제작한다.
-  if request.method == 'POST':
-    # POST방식의 전송이므로 form속성을 이용해서 폼갑을 받는다.
-    input_id = request.form['username'] 
-    input_pw = request.form['password']
-    '''
-    첫번째로 user 딕셔너리에 입력받은 아이디가 존재하는지 확인하고,
-    두번째로 일치하는 패스워드가 있는지 확인한다.
-    '''
-    # 사용자 인증
-    if input_id in users and users[input_id] == input_pw:
-      # 로그인 정보가 일치하면 session객체에 사용자의 아이디를
-      # 입력하고
-      session['username'] = input_id
-      # 마이페이지로 이동한다.
-      return redirect(url_for('mypage'))
-    else:
-      # 로그인 정보가 일치하지 않는 경우에는 로그인 페이지로 이동한다.
-      # 이때 error라는 인수에 오류메세지를 전달한다.
-      return render_template('login.html',
-                             error='아이디 또는 비밀번호가 틀렸습니다.')
-      # 첫 진입시에는 링크를 클릭해서 이동하게 되므로 GET방식의 요청임
-      # 따라서 로그인 페이지를 렌더링한다.
-  return render_template('login.html')
-
-# 로그아웃 처리
-@app.route('/logout')
-def logout():
-  # session에 저장된 사용자 정보를 삭제한다.
-  session.pop('username', None)
-  # 삭제가 완료되면 index 페이지로 이동한다.
-  return redirect(url_for('root'))     
     
 # 플라스크 애플리케이션 작성시 모든 함수를 정의한 후 app.run()을
 # 실행한다.

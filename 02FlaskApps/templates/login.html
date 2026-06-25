@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인</title>
+</head>
+<body>
+  <h2>로그인 페이지</h2>  
+  {# error 라는 값이 있다면 메세지를 출력한다. #}
+  {% if error %}
+  <p style="color: red;">{{ error }}</p>
+  {% endif %}
+  {# 로그인 페이지는 전송방식을 POST로 제작한다. form태그에 action 속성을 지정하지 않으면 현재 페이지로 폼값이 전송된다. #}
+  <form method="post">
+    {# input 입력상자에 required 속성이 추가되어 있으므로 빈값인 경우에는 폼값 전송이 자동으로 차단된다. #}
+    <p>아이디: <input type="text" name="username" required></p>
+    <p>비밀번호: <input type="password" name="password" required></p>
+    <input type="submit" value="로그인">
+  </form>
+</body>
+</html>
