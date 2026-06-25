@@ -1,5 +1,12 @@
 # HTML 파일을 템플릿으로 사용하기 위한 모듈 임포트
-from flask import Flask, render_template
+from collections import UserDict
+import email
+import html
+from os import name
+from pickle import GET
+from unittest.result import failfast
+
+from flask import Flask, render_template, request
 # 플라스크 앱 초기화 및 객체생성
 app = Flask(__name__)
 
@@ -33,8 +40,55 @@ def jinja2():
                          title = 'Jinja2',
                          home_str = 'Jinja2를 알아봅시다',
                          home_list = [1, 2, 3, 4, 5])  
-  
-  
+
+# 폼값을 입력하고 전송하기 위한 페이지 설정 
+@app.route('/form')
+def info():
+  # 별도의 처리없이 템플릿 파일을 렌더링
+  return render_template('form.html')
+
+# 랑우팅 설정시 methods 속성에 사용할 전송방식을 list로 전송
+@app.route('/method', methods=['GET', 'POST'])
+def method():
+  if request.method == 'GET':
+    # GET 방식 : form 데이터를 request.srgs 로 받음
+    # to_dict() 메서드를 사용하면 딕셔너리 형식으로 반환해준다
+    args_dict = request.args.to_dict()
+    print("args_dict (GET):", args_dict)
+    # 반환된 값을 로그로 출력해서 확인
+    userid = request.args["userid"] # 방법1
+    # get() 함수의 인수로 접근하여 가져옴
+    name = request.args.get("name") # 방법2
+    email = request.args.get("email")
+    # POST방식에서 사용하는 form은 사용할 수 없으므로 None으로 출력됨
+    fail = request.form.get("name") # 의도적 오류 (None)
+    print("실패예시 request.form.get(name):", fail)
+    # 텔플릿을 렌더링하면서 필요한 변수를
+    return render_template(
+      'get.html',
+      userid=userid,
+      name=name,
+      email=email,
+      fail=fail
+      )
+  else:
+    # POST 방식 : form 데이터를 request.form 으로 받음
+    form_dict = request.form.to_dict()
+    print("form_dict (POST):", form_dict)
+    userid = request.form["userid"] # 방법1
+    name = request.form.get("name") # 방법2
+    email = request.form.get("email")
+    # args는 GET방식에서만 사용할 수 있어 None으로 출력됨
+    fail = request.args.get("name") # 의도적 오류
+    print("실패예시 request.args.get(name):", fail)
+    return render_template(
+      'post.html',
+      userid=userid,
+      name=name,
+      email=email,
+      fail=fail
+    ) 
+    
 # 플라스크 애플리케이션 작성시 모든 함수를 정의한 후 app.run()을
 # 실행한다.
 if __name__=='__main__':
