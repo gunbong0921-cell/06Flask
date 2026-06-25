@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>파일 목록</title>
+  <style>
+    table { border-collapse: collapse; width: 80%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    img { max-width: 150px; height: auto; }
+  </style>
+</head>
+<body>
+<h1>업로드된 파일 목록</h1>
+{% if files %}
+<table>
+  <thead>
+    <tr>
+      <th>파일명</th>
+      <th>다운로드</th>
+      <th>미리보기</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for file in files %}
+    <tr>
+      <td>{{ file }}</td>
+      <td><a href="{{ url_for('download_file', filename=file) }}">다운로드</a></td>
+      <td>
+        {% if file.lower().endswith((' .png', '.jpg', '.gif')) %}
+          <img src="{{ url_for('static', filename='uploads/' ~ file) }}" alt="{{ file }}">
+        {% else %}
+          (이미지 아님)
+        {% endif %}    
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+    <p>아직 업로드된 파일이 없습니다.</p> 
+{% endif %}
+  
+<p><a href="{{ url_for('index') }}">파일 업로드</a></p>
+</body>
+</html>

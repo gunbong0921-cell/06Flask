@@ -171,24 +171,7 @@ def logout():
   # session에 저장된 사용자 정보를 삭제한다.
   session.pop('username', None)
   # 삭제가 완료되면 index 페이지로 이동한다.
-  return redirect(url_for('root'))    
-
-# 요청시 외부페이지로 이동한다.
-@app.route('/daum')
-def daum():
-  return redirect("http://www.daum.net/")
-
-@app.route('/naver')
-def naver():
-  return redirect("http://www.naver.com/")
-
-# page not found 에러 발생시 핸들링
-@app.errorhandler(404)
-def page_not_found(error):
-  # 실 서비스에서는 Parking 페이지를 만들어서 보여준다(Daum참조)
-  print("오류 로그:", error) # 서버 콘솔에 출력
-  # 우리는 간단히 텍스트 메세지만 출력해본다.
-  return "페이지가 없습니다. URL를 확인 하세요 <a href='/'>HOME</a>", 404 
+  return redirect(url_for('root'))     
     
 # 플라스크 애플리케이션 작성시 모든 함수를 정의한 후 app.run()을
 # 실행한다.
