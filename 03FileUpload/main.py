@@ -1,4 +1,4 @@
-# 모둘 임포트
+# 모듈 임포트
 import os # 업로드 경로 생성
 import uuid # UUID 를 생성하기 위한 모듈
 # 플라스크 관련 모듈
@@ -9,9 +9,11 @@ from flask import (url_for, send_from_directory)
 # Flask 앱 인스턴스를 생성
 app = Flask(__name__)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # 파일 업로드 경로 생성. 정적 파일 저장을 위해 static 하위로 설정.
 # 업로드 경로 (static/uploads)
-app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'static', 'uploads')
 # 해당 디렉토리가 없다면 생성.
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
