@@ -27,7 +27,7 @@
       <td>{{ file }}</td>
       <td><a href="{{ url_for('download_file', filename=file) }}">다운로드</a></td>
       <td>
-        {% if file.lower().endswith((' .png', '.jpg', '.gif')) %}
+        {% if file.lower().endswith(('.png', '.jpg', '.gif')) %}
           <img src="{{ url_for('static', filename='uploads/' ~ file) }}" alt="{{ file }}">
         {% else %}
           (이미지 아님)
