@@ -70,7 +70,7 @@ def download_file(filename):
   # download_name : 다운로드 시 파일명을 변경함
   # return send_from_directory(app.config['UPLOAD_FOLDER'],
   #                            filename, as_attachment=True
-  #                            download_name='내이미지.png) 
+  #                            download_name='내이미지.png') 
   
 # 업로드된 파일 목록 보기
 @app.route('/fileList')
