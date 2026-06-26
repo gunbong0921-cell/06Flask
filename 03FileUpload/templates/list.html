@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>파일 목록</title>
   <style>
+    /*
+    태그선택자를 통해 스타일 부여.
+    border-collapse : 테이블을 구성하는 셍(td)의 테두리를
+      병합하기 위한 속성
+    max-width : 이미지의 최대 가로크기를 150px로 지정. 그 보다
+      작은 이미지는 원본크기 그대로 표시된다.  
+    */
     table { border-collapse: collapse; width: 80%; }
     th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
     img { max-width: 150px; height: auto; }
@@ -12,6 +19,7 @@
 </head>
 <body>
 <h1>업로드된 파일 목록</h1>
+{# upload #}
 {% if files %}
 <table>
   <thead>
@@ -22,12 +30,20 @@
     </tr>
   </thead>
   <tbody>
+    <!---->
     {% for file in files %}
     <tr>
       <td>{{ file }}</td>
+      <!-- download_file() 함수에 설정된 요청명을 통해 URL을
+      생성한다. 즉 '/download/파일명'과 같은 링크를 생성하게 된다.
+      파일명은 두번째 인수로 전달하고 있다. -->
       <td><a href="{{ url_for('download_file', filename=file) }}">다운로드</a></td>
       <td>
+        <!-- 파일의 확장자를 판별해서 이미지 출력 -->
         {% if file.lower().endswith(('.png', '.jpg', '.gif')) %}
+        <!-- 정적 디렉토리인 static 하위의 uploads 와 파일명을
+         연결해서 경로를 지정항다. ~는 Jinja2에서 문자열 연결을
+         위해 사용하는 연산자임. -->
           <img src="{{ url_for('static', filename='uploads/' ~ file) }}" alt="{{ file }}">
         {% else %}
           (이미지 아님)
